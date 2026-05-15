@@ -13,7 +13,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
     float posY = 0.0f;
     float Rotation = 0.0f;
     //ボールの速度
-    float ball_speed = 0.8f;
+    float ball_speed = 1.8f;
     float ball_Rotation_speed = 100.0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -27,8 +27,9 @@ public class NewMonoBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //ボールを動かすキーの取得
-        Move = Input.GetAxisRaw("Vertical"); 
+        Move = Input.GetAxisRaw("Vertical");
         Rotation = Input.GetAxisRaw("Horizontal");
     }
     private void FixedUpdate()
