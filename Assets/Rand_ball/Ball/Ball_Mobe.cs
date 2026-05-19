@@ -14,9 +14,11 @@ public class NewMonoBehaviourScript : MonoBehaviour
     float Rotation = 0.0f;
     //ボールの速度
     float Ball_Speed = 1.8f;
+    //ボール回転スピード
     float Ball_Rotation_Speed = 100.0f;
     //加速速度
     float Ball_Accleration_Speed = 100.0f;
+    //制限速度
     float MaxSpeed = 25.0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,18 +39,21 @@ public class NewMonoBehaviourScript : MonoBehaviour
     }
     private void FixedUpdate()
     {
+       
         Vector3 dir = transform.forward;
         if (MaxSpeed> Move)
         {
             //移動
             if (Move != 0 || Rotation != 0)
             {
+                //ワールドの軸を元に移動　（オブジェクトの軸は使うと難しい）
                 rb.angularVelocity +=
                 new Vector3
                 (Rotation * Ball_Speed,
                 PosY,
                 Move * Ball_Speed);
 
+                //ボールの回転
                 transform.Rotate(
                     Rotation * Ball_Rotation_Speed,
                     0,
