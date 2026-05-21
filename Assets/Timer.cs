@@ -21,7 +21,8 @@ public class Timer : MonoBehaviour
             RemainingTime = 0;
             //GameOvere();
             TimerText.color = Color.yellow;
-            }
+            Debug.Log("ÉQÅ[ÉÄèIóπ");
+        }
         //åvéZ
         //60Ç≈äÑÇÈ
         int Minutes = Mathf.FloorToInt(RemainingTime / 60);

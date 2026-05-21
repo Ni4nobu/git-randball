@@ -36,6 +36,16 @@ public class NewMonoBehaviourScript : MonoBehaviour
         //ボールを動かすキーの取得
         Move = Input.GetAxisRaw("Vertical");
         Rotation = Input.GetAxisRaw("Horizontal");
+        if(Input.GetKey(KeyCode.Return))
+        {
+#if UNITY_EDITOR
+            // Unityエディターでの動作
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+        // 実際のゲーム終了処理
+        Application.Quit();
+#endif
+        }
     }
     private void FixedUpdate()
     {
@@ -75,8 +85,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
         {
             Debug.Log("スペースキー");
 
-            //rb.angularVelocity += new Vector3(0, 0, Move * Ball_Accleration_Speed);
-            Move += Ball_Accleration_Speed;
+            rb.angularVelocity += new Vector3(0, 0, (Move) * Ball_Accleration_Speed);
+            //Move += Ball_Accleration_Speed;
         }
     }
 }
