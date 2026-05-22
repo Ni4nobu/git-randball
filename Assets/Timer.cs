@@ -27,6 +27,7 @@ public class Timer : MonoBehaviour
         //60で割る
         int Minutes = Mathf.FloorToInt(RemainingTime / 60);
         int Seconds = Mathf.FloorToInt(RemainingTime % 60);
+        // テキストの表示
         TimerText.text = string.Format("{0:00}:{1:00}", Minutes, Seconds);
     }
 }
