@@ -1,10 +1,13 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI TimerText;
     [SerializeField] float RemainingTime;
+
+    public string Scene_Name;//シーン読み込み
     // Update is called once per frame
     void Update()
     {
@@ -16,12 +19,13 @@ public class Timer : MonoBehaviour
             RemainingTime -= Time.deltaTime;
         }
         //残り時間が0になると引くことを止めて文字を黄色に変える
-        else if (RemainingTime < 0)
+        else if (RemainingTime <= 0)
             {
             RemainingTime = 0;
             //GameOvere();
             TimerText.color = Color.yellow;
             Debug.Log("ゲーム終了");
+            SceneManager.LoadScene(Scene_Name);
         }
         //計算
         //60で割る

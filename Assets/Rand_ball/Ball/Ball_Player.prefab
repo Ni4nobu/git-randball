@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 8059163194082758438}
   - component: {fileID: 1167040884582093548}
   - component: {fileID: 4192325569652003317}
-  - component: {fileID: 6824330703631209876}
   m_Layer: 0
   m_Name: Ball_Player
   m_TagString: Player
@@ -150,19 +149,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6824330703631209876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732782041753979742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 923f76a64daa38046b2cf4d4eb15b5c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCountDoun: 1
-  isTimeOver: 0
-  gameTime: 60
-  displayTime: 0

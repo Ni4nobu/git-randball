@@ -1007,7 +1007,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimerText: {fileID: 1609804514}
-  RemainingTime: 40
+  RemainingTime: 25
+  Scene_Name: Game_Clear
 --- !u!114 &1329397106
 MonoBehaviour:
   m_ObjectHideFlags: 0

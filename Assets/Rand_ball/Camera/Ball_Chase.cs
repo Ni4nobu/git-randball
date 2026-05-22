@@ -15,8 +15,9 @@ public class Ball_Chase : MonoBehaviour
     {
         Screen.fullScreen = false;
         Screen.SetResolution(1280, 720, false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //カーソルキーを消す
+        Cursor.lockState = CursorLockMode.Locked;//カーソルを動かしても画面から出ない
+        Cursor.visible = false;//カーソルを非表示
     }
 
     // Update is called once per frame
@@ -54,7 +55,7 @@ public class Ball_Chase : MonoBehaviour
             {
                 transform.eulerAngles = new Vector3(165, 90, 180);
             }
-          
+
 
         }
     }
