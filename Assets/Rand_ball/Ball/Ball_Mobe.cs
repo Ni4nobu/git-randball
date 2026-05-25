@@ -1,12 +1,19 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.GraphicsBuffer;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+
+//スコアの計算
+//プレイヤーの操作
+//オブジェクトの破壊
+
+public class Ball_Mobe : MonoBehaviour
 {
-    
+    public static Ball_Mobe instance;  // 唯一のインスタンス
+    public int sentence;  // 取得する変数
     Rigidbody rb;
     //入力
     float Move = 0.0f;
@@ -20,9 +27,13 @@ public class NewMonoBehaviourScript : MonoBehaviour
     float Ball_Accleration_Speed = 100.0f;
     //制限速度
     float MaxSpeed = 25.0f;
+    //スコア
+    public  int score = 0;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
         //ボールを回転させる
         //transform.eulerAngles = new Vector3(45, 0, 0);
         //Rigidbody取得
@@ -38,6 +49,18 @@ public class NewMonoBehaviourScript : MonoBehaviour
         Rotation = Input.GetAxisRaw("Horizontal");
         if(Input.GetKey(KeyCode.Return))
         {
+            //メニュー画面
+#if UNITY_EDITOR
+            // Unityエディターでの動作
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+        // 実際のゲーム終了処理
+        Application.Quit();
+#endif
+        }
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            //ゲーム終了
 #if UNITY_EDITOR
             // Unityエディターでの動作
             UnityEditor.EditorApplication.isPlaying = false;
@@ -89,4 +112,31 @@ public class NewMonoBehaviourScript : MonoBehaviour
             //Move += Ball_Accleration_Speed;
         }
     }
+    void OnTriggerEnter(Collider other)
+    {
+       
+        //if (collision.gameObject.CompareTag("Player"))
+        //スコア
+        if (other.gameObject.CompareTag("Score"))
+        {  
+            OBJ_Management Obj_Score = other.gameObject.GetComponent<OBJ_Management>();
+            //スコアを得る
+            score = Obj_Score.Value;
+            sentence += score;
+
+            //オブジェクトを削除
+            Destroy(other.gameObject);
+
+            Debug.Log("Score");
+        }
+    }
+    void Awake()
+    {
+        // インスタンスがまだ作られていなければ自分を代入
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+
 }
