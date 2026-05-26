@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//タイマーの制御と表示
 public class Timer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI TimerText;
@@ -16,7 +17,11 @@ public class Timer : MonoBehaviour
         {
             //時間を引いていくのは-＝
             //時間を足していくのは+＝
-            RemainingTime -= Time.deltaTime;
+            if (RemainingTime >= 0)
+            {
+                RemainingTime -= Time.deltaTime;
+            }
+               
         }
         //残り時間が0になると引くことを止めて文字を黄色に変える
         else if (RemainingTime <= 0)

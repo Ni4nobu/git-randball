@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//リザルト画面のシーン移動とボタンとマウスの制御を行う
 public class Clear_Manager : MonoBehaviour
 {
     public GameObject GameButton;//スタートボタン

@@ -5,10 +5,9 @@ using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.GraphicsBuffer;
 
-
-//スコアの計算
 //プレイヤーの操作
 //オブジェクトの破壊
+//スコアの計算
 
 public class Ball_Mobe : MonoBehaviour
 {
@@ -47,17 +46,17 @@ public class Ball_Mobe : MonoBehaviour
         //ボールを動かすキーの取得
         Move = Input.GetAxisRaw("Vertical");
         Rotation = Input.GetAxisRaw("Horizontal");
-        if(Input.GetKey(KeyCode.Return))
-        {
-            //メニュー画面
-#if UNITY_EDITOR
-            // Unityエディターでの動作
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-        // 実際のゲーム終了処理
-        Application.Quit();
-#endif
-        }
+//        if(Input.GetKey(KeyCode.Return))
+//        {
+//            //メニュー画面
+//#if UNITY_EDITOR
+//            // Unityエディターでの動作
+//            UnityEditor.EditorApplication.isPlaying = false;
+//#else
+//        // 実際のゲーム終了処理
+//        Application.Quit();
+//#endif
+//        }
         if (Input.GetKey(KeyCode.Escape))
         {
             //ゲーム終了
@@ -70,6 +69,7 @@ public class Ball_Mobe : MonoBehaviour
 #endif
         }
     }
+    //プレイヤーの移動
     private void FixedUpdate()
     {
        
@@ -112,6 +112,8 @@ public class Ball_Mobe : MonoBehaviour
             //Move += Ball_Accleration_Speed;
         }
     }
+
+    //スコアの計算
     void OnTriggerEnter(Collider other)
     {
        
@@ -130,6 +132,7 @@ public class Ball_Mobe : MonoBehaviour
             Debug.Log("Score");
         }
     }
+    //インスタンス
     void Awake()
     {
         // インスタンスがまだ作られていなければ自分を代入

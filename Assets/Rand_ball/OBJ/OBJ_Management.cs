@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-//スコアを足す
+//オブジェクトのスコアを決める
 public class OBJ_Management : MonoBehaviour
 {
     public int Value = 0;

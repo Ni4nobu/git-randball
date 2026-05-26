@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+//タイトル画面の制御
 public class Title_Manager : MonoBehaviour
 {
     public GameObject StartButton;//スタートボタン

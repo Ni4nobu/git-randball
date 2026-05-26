@@ -1,6 +1,6 @@
 using UnityEngine;
 
-
+//現状使わない
 //このオブジェクトはどういう物かを判断
 public class Score_Calculate : MonoBehaviour
 {
