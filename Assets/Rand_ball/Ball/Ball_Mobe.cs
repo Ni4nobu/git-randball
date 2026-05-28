@@ -16,27 +16,34 @@ public class Ball_Mobe : MonoBehaviour
     Rigidbody rb;
     //入力
     float Move = 0.0f;
-    float PosY = 0.0f;
+    float PosY = -3.0f;
     float Rotation = 0.0f;
     //ボールの速度
-    float Ball_Speed = 1.8f;
+    float CurrentSpeed = 0.0f;              //ボールの速度をコントロール
+    float Ball_Speed = 1.8f;                //通常の速度
+    float Ball_Accleration_Speed = 13.0f;    //加速時の速度
     //ボール回転スピード
     float Ball_Rotation_Speed = 100.0f;
-    //加速速度
-    float Ball_Accleration_Speed = 100.0f;
+    //スペースキーの入力
+    bool SpeedUp = false;
+
+    //スタミナ
+   // float Max_Stamina = 100.0f;//最大スタミナ
+  //  float Stamina_Consumption = 1.0f;//スタミナ消費
+
     //制限速度
-    float MaxSpeed = 25.0f;
+    float Max_Speed = 250.0f;
     //スコア
     public  int score = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
-        //ボールを回転させる
-        //transform.eulerAngles = new Vector3(45, 0, 0);
-        //Rigidbody取得
-        rb = GetComponent<Rigidbody>();
+
+
+        transform.eulerAngles = new Vector3(0, 0, 0); //ボールを回転させる
+
+        rb = GetComponent<Rigidbody>();  //Rigidbody取得
     }
 
     // Update is called once per frame
@@ -46,49 +53,63 @@ public class Ball_Mobe : MonoBehaviour
         //ボールを動かすキーの取得
         Move = Input.GetAxisRaw("Vertical");
         Rotation = Input.GetAxisRaw("Horizontal");
-//        if(Input.GetKey(KeyCode.Return))
-//        {
-//            //メニュー画面
-//#if UNITY_EDITOR
-//            // Unityエディターでの動作
-//            UnityEditor.EditorApplication.isPlaying = false;
-//#else
-//        // 実際のゲーム終了処理
-//        Application.Quit();
-//#endif
-//        }
+
+        // ダッシュキーの検知
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //押した
+            SpeedUp = true;
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            //離した
+            SpeedUp = false;
+        }
+       
+        //ゲーム終了
         if (Input.GetKey(KeyCode.Escape))
         {
-            //ゲーム終了
-#if UNITY_EDITOR
+            
+        #if UNITY_EDITOR
             // Unityエディターでの動作
             UnityEditor.EditorApplication.isPlaying = false;
-#else
+        #else
         // 実際のゲーム終了処理
         Application.Quit();
-#endif
+        #endif
         }
     }
     //プレイヤーの移動
     private void FixedUpdate()
     {
        
-        Vector3 dir = transform.forward;
-        if (MaxSpeed> Move)
+        Vector3 dir = transform.forward ;
+        Vector3 Move_Dir = transform.forward * Move * CurrentSpeed;
+        //Vector3 force = new Vector3(30.0f, 0.0f, 0.0f);
+        //rb.AddForce(force); // 力を加える
+
+        if (Max_Speed > Move)
         {
             //移動
             if (Move != 0 || Rotation != 0)
             {
                 //ワールドの軸を元に移動　（オブジェクトの軸は使うと難しい）
+
                 rb.angularVelocity +=
                 new Vector3
-                (Rotation * Ball_Speed,
+                (Rotation * CurrentSpeed,
                 PosY,
-                Move * Ball_Speed);
+                Move * CurrentSpeed);
+
+                rb.linearVelocity =
+                new Vector3
+                (-Move * CurrentSpeed,
+                PosY,
+                Rotation * CurrentSpeed);
 
                 //ボールの回転
                 transform.Rotate(
-                    Rotation * Ball_Rotation_Speed,
+                    Rotation * Ball_Rotation_Speed * Time.fixedDeltaTime,
                     0,
                     0
                     );
@@ -97,19 +118,29 @@ public class Ball_Mobe : MonoBehaviour
             else
             {
                 rb.angularVelocity *= 0.98f;
-                if (Move < 0.98 || Rotation < 0.98)
+                if (Move < 0.098f || Rotation < 0.098f)
                 {
-                    rb.angularVelocity *= 0.00f;
+                    //rb.angularVelocity *= 0.00f;
+                    //rb.linearVelocity *= 0.00f;
                 }
             }
         }
-        //加速キーの取得と制御
-        if (Input.GetKey(KeyCode.Space))
+        //ダッシュ
+        if (SpeedUp == true)
         {
-            Debug.Log("スペースキー");
+            //速度を足す
 
-            rb.angularVelocity += new Vector3(0, 0, (Move) * Ball_Accleration_Speed);
-            //Move += Ball_Accleration_Speed;
+            //Debug.Log("スペースキー");
+            Debug.Log("ボールの速度" + CurrentSpeed);
+            CurrentSpeed = Ball_Speed  * Ball_Accleration_Speed;
+            Debug.Log("ボールの速度" + CurrentSpeed);
+        }
+        //通常
+        else if (SpeedUp == false)
+        {
+            //速度を戻す
+            CurrentSpeed = Ball_Speed;
+            //Debug.Log("ボールの速度"+CurrentSpeed);
         }
     }
 
@@ -129,7 +160,7 @@ public class Ball_Mobe : MonoBehaviour
             //オブジェクトを削除
             Destroy(other.gameObject);
 
-            Debug.Log("Score");
+            Debug.Log("Score"+ score);
         }
     }
     //インスタンス
