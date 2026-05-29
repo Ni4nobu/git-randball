@@ -20,16 +20,20 @@ public class Ball_Mobe : MonoBehaviour
     float Rotation = 0.0f;
     //ボールの速度
     float CurrentSpeed = 0.0f;              //ボールの速度をコントロール
-    float Ball_Speed = 1.8f;                //通常の速度
-    float Ball_Accleration_Speed = 13.0f;    //加速時の速度
+    float Ball_Speed = 4.8f;                //通常の速度
+    float Ball_Accleration_Speed = 8.5f;   //加速時の速度
     //ボール回転スピード
+   // float Current_Rotation_Speed = 0.0f;//ボールの回転速度コントロール
     float Ball_Rotation_Speed = 100.0f;
+    //float Ball_Rotation_Accleration_Speed = 101.0f;//加速時
     //スペースキーの入力
     bool SpeedUp = false;
 
     //スタミナ
-   // float Max_Stamina = 100.0f;//最大スタミナ
-  //  float Stamina_Consumption = 1.0f;//スタミナ消費
+    float Max_Stamina = 100.0f;//最大スタミナ
+    float Stamina_Consumption = 1.0f;//スタミナ消費
+    float Stamina_Recovery = 10.0f;//スタミナ回復
+    float Stamina = 0.0f;//スタミナ
 
     //制限速度
     float Max_Speed = 250.0f;
@@ -39,7 +43,7 @@ public class Ball_Mobe : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        Stamina = Max_Stamina;
 
         transform.eulerAngles = new Vector3(0, 0, 0); //ボールを回転させる
 
@@ -117,30 +121,74 @@ public class Ball_Mobe : MonoBehaviour
             //ボールの動きが0.98を下回ると停止
             else
             {
-                rb.angularVelocity *= 0.98f;
-                if (Move < 0.098f || Rotation < 0.098f)
+                //linearVelocity
+                Vector3 L_Vector = rb.linearVelocity;
+                //減速
+                Vector3 A_Vector = rb.angularVelocity;
+                //rb.angularVelocity *= 0.98f;
+
+                A_Vector.x *= 0.98f;
+                A_Vector.y *= 0.98f;
+
+                L_Vector.x *= 0.98f;
+                L_Vector.z *= 0.98f;
+
+                //if (L_Vector.x > 0.1f && L_Vector.x > -0.1f
+                //   || L_Vector.z > 0.1f && L_Vector.z > -0.1f)
+                    if (Move < 0.98f || Rotation < 0.98f)
                 {
                     //rb.angularVelocity *= 0.00f;
-                    //rb.linearVelocity *= 0.00f;
+                    L_Vector.x *= 0.00f;
+                    L_Vector.z *= 0.00f;
+
+                    A_Vector.x *= 0.00f;
+                    A_Vector.y *= 0.00f;
                 }
             }
         }
         //ダッシュ
-        if (SpeedUp == true)
+        if (SpeedUp == true && Stamina>70.0f)
         {
             //速度を足す
 
             //Debug.Log("スペースキー");
-            Debug.Log("ボールの速度" + CurrentSpeed);
-            CurrentSpeed = Ball_Speed  * Ball_Accleration_Speed;
-            Debug.Log("ボールの速度" + CurrentSpeed);
+            // Debug.Log("ボールの速度" + CurrentSpeed);
+            //Current_Rotation_Speed = Ball_Rotation_Speed;
+             CurrentSpeed = Ball_Accleration_Speed; 
+            Stamina -= Stamina_Consumption * Time.fixedDeltaTime;
+            Debug.Log("スタミナ:" + Stamina);
+            //70を下回ってもスペースキーを離さないと加速できるのを防ぐ
+            if(Stamina < 70.0f)
+            {
+                SpeedUp = false;    
+            }
         }
         //通常
         else if (SpeedUp == false)
         {
+            Debug.Log("通常");
             //速度を戻す
             CurrentSpeed = Ball_Speed;
-            //Debug.Log("ボールの速度"+CurrentSpeed);
+            //Current_Rotation_Speed = Ball_Rotation_Speed;
+            //スタミナ回復
+            if (Stamina <= Max_Stamina)
+            {
+                Stamina += Stamina_Recovery * Time.fixedDeltaTime;
+            }
+           
+
+            //ボールの速度を戻していく
+            if (CurrentSpeed > Ball_Speed)
+            {
+               
+                CurrentSpeed -= 0.5f;
+                if (CurrentSpeed < Ball_Speed)
+                {
+                    CurrentSpeed = Ball_Speed;
+                }
+                    Debug.Log("減速" + CurrentSpeed);
+            }
+            //Debug.Log("ボールの速度"+CurrentSpeed);      
         }
     }
 
