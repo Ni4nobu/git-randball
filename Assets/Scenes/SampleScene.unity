@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ball_Player
       objectReference: {fileID: 0}
+    - target: {fileID: 732782041753979742, guid: bd15bd99ba7d1f14aa0aca4bc5c413d3, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1810713279218234463, guid: bd15bd99ba7d1f14aa0aca4bc5c413d3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.3368587
@@ -186,6 +190,22 @@ PrefabInstance:
     - target: {fileID: 4192325569652003317, guid: bd15bd99ba7d1f14aa0aca4bc5c413d3, type: 3}
       propertyPath: m_Constraints
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4192325569652003317, guid: bd15bd99ba7d1f14aa0aca4bc5c413d3, type: 3}
+      propertyPath: m_ImplicitCom
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4192325569652003317, guid: bd15bd99ba7d1f14aa0aca4bc5c413d3, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4192325569652003317, guid: bd15bd99ba7d1f14aa0aca4bc5c413d3, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4192325569652003317, guid: bd15bd99ba7d1f14aa0aca4bc5c413d3, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4305245212528039633, guid: bd15bd99ba7d1f14aa0aca4bc5c413d3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -723,13 +743,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 367767656}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.2451189, w: 0.96949303}
-  m_LocalPosition: {x: -85.41, y: 0.56, z: -2.29}
-  m_LocalScale: {x: 5, y: 1, z: 5}
+  m_LocalRotation: {x: 0, y: 0, z: -0.46174863, w: 0.8870109}
+  m_LocalPosition: {x: -85, y: 3, z: -2.29}
+  m_LocalScale: {x: 10, y: 0.5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -28.378}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -55}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,6 +1211,8 @@ GameObject:
   - component: {fileID: 1075364773}
   - component: {fileID: 1075364772}
   - component: {fileID: 1075364776}
+  - component: {fileID: 1075364777}
+  - component: {fileID: 1075364778}
   m_Layer: 0
   m_Name: Bomb_OBJ
   m_TagString: Score
@@ -1299,7 +1321,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b16c63eef6e9d34e9bc21267d7e4648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Scores: []
+--- !u!114 &1075364777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075364771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 460219add6368434ea9c7c8a2ab97209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   Value: 10
+--- !u!135 &1075364778
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075364771}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 5
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1001 &1208099111
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2899,7 +2955,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1821080105891800558, guid: 45a6faa346bfccc419e082d20243f00e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.162
+      value: -10.23
       objectReference: {fileID: 0}
     - target: {fileID: 1821080105891800558, guid: 45a6faa346bfccc419e082d20243f00e, type: 3}
       propertyPath: m_LocalPosition.y

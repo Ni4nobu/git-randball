@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
+using static UnityEditor.Progress;
 using static UnityEngine.GraphicsBuffer;
 
 //プレイヤーの操作
@@ -21,11 +22,11 @@ public class Ball_Mobe : MonoBehaviour
     //ボールの速度
     float CurrentSpeed = 0.0f;              //ボールの速度をコントロール
     float Ball_Speed = 4.8f;                //通常の速度
-    float Ball_Accleration_Speed = 8.5f;   //加速時の速度
+    float Ball_Accleration_Speed = 10.5f;   //加速時の速度
     //ボール回転スピード
-   // float Current_Rotation_Speed = 0.0f;//ボールの回転速度コントロール
+    float AA_Current_Rotation_Speed = 0.0f;//ボールの回転速度コントロール
     float Ball_Rotation_Speed = 100.0f;
-    //float Ball_Rotation_Accleration_Speed = 101.0f;//加速時
+    float AA_Ball_Rotation_Accleration_Speed = 200.0f;//加速時
     //スペースキーの入力
     bool SpeedUp = false;
 
@@ -102,7 +103,7 @@ public class Ball_Mobe : MonoBehaviour
                 rb.angularVelocity +=
                 new Vector3
                 (Rotation * CurrentSpeed,
-                PosY,
+                0.0f,
                 Move * CurrentSpeed);
 
                 rb.linearVelocity =
@@ -113,7 +114,7 @@ public class Ball_Mobe : MonoBehaviour
 
                 //ボールの回転
                 transform.Rotate(
-                    Rotation * Ball_Rotation_Speed * Time.fixedDeltaTime,
+                    Rotation * AA_Current_Rotation_Speed * Time.fixedDeltaTime,
                     0,
                     0
                     );
@@ -153,8 +154,8 @@ public class Ball_Mobe : MonoBehaviour
 
             //Debug.Log("スペースキー");
             // Debug.Log("ボールの速度" + CurrentSpeed);
-            //Current_Rotation_Speed = Ball_Rotation_Speed;
-             CurrentSpeed = Ball_Accleration_Speed; 
+            AA_Current_Rotation_Speed = Ball_Rotation_Speed; //ボール回転
+             CurrentSpeed = Ball_Accleration_Speed; //ボール移動
             Stamina -= Stamina_Consumption * Time.fixedDeltaTime;
             Debug.Log("スタミナ:" + Stamina);
             //70を下回ってもスペースキーを離さないと加速できるのを防ぐ
@@ -166,10 +167,10 @@ public class Ball_Mobe : MonoBehaviour
         //通常
         else if (SpeedUp == false)
         {
-            Debug.Log("通常");
+           // Debug.Log("通常");
             //速度を戻す
-            CurrentSpeed = Ball_Speed;
-            //Current_Rotation_Speed = Ball_Rotation_Speed;
+            CurrentSpeed = Ball_Speed;//ボール移動
+            AA_Current_Rotation_Speed = AA_Ball_Rotation_Accleration_Speed;//ボール回転
             //スタミナ回復
             if (Stamina <= Max_Stamina)
             {
@@ -200,9 +201,10 @@ public class Ball_Mobe : MonoBehaviour
         //スコア
         if (other.gameObject.CompareTag("Score"))
         {  
+            //コンポーネントを得る
             OBJ_Management Obj_Score = other.gameObject.GetComponent<OBJ_Management>();
             //スコアを得る
-            score = Obj_Score.Value;
+            score = Obj_Score.Value; //Debug.Log("オブジェクト名" + other.name);
             sentence += score;
 
             //オブジェクトを削除
