@@ -32,8 +32,8 @@ public class Ball_Mobe : MonoBehaviour
 
     //スタミナ
     float Max_Stamina = 100.0f;//最大スタミナ
-    float Stamina_Consumption = 1.0f;//スタミナ消費
-    float Stamina_Recovery = 10.0f;//スタミナ回復
+    float Stamina_Consumption = 10.0f;//スタミナ消費
+    float Stamina_Recovery = 2.0f;//スタミナ回復
     float Stamina = 0.0f;//スタミナ
 
     //制限速度
@@ -41,10 +41,15 @@ public class Ball_Mobe : MonoBehaviour
     //スコア
     public  int score = 0;
 
+  
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Max_Stamina = 100.0f;//最大スタミナ
         Stamina = Max_Stamina;
+
+        CurrentSpeed = 0.0f;
+        AA_Current_Rotation_Speed = 0.0f;//ボールの回転速度コントロール
 
         transform.eulerAngles = new Vector3(0, 0, 0); //ボールを回転させる
 
@@ -148,7 +153,7 @@ public class Ball_Mobe : MonoBehaviour
             }
         }
         //ダッシュ
-        if (SpeedUp == true && Stamina>70.0f)
+        if (SpeedUp == true && Stamina>0.0f)
         {
             //速度を足す
 
@@ -156,11 +161,14 @@ public class Ball_Mobe : MonoBehaviour
             // Debug.Log("ボールの速度" + CurrentSpeed);
             AA_Current_Rotation_Speed = Ball_Rotation_Speed; //ボール回転
              CurrentSpeed = Ball_Accleration_Speed; //ボール移動
-            Stamina -= Stamina_Consumption * Time.fixedDeltaTime;
+
+            Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
             Debug.Log("スタミナ:" + Stamina);
             //70を下回ってもスペースキーを離さないと加速できるのを防ぐ
-            if(Stamina < 70.0f)
+            if(Stamina <= 0.0f)
             {
+                Stamina = 0.0f;
+                Debug.Log("スタミナ:" + Stamina);
                 SpeedUp = false;    
             }
         }
@@ -196,21 +204,35 @@ public class Ball_Mobe : MonoBehaviour
     //スコアの計算
     void OnTriggerEnter(Collider other)
     {
-       
+
         //if (collision.gameObject.CompareTag("Player"))
         //スコア
         if (other.gameObject.CompareTag("Score"))
-        {  
+        {
             //コンポーネントを得る
-            OBJ_Management Obj_Score = other.gameObject.GetComponent<OBJ_Management>();
-            //スコアを得る
-            score = Obj_Score.Value; //Debug.Log("オブジェクト名" + other.name);
-            sentence += score;
+            OBJ_Management OBJ = other.gameObject.GetComponent<OBJ_Management>();
+            if (OBJ == null)
+            {
+                return;
+            }
 
-            //オブジェクトを削除
-            Destroy(other.gameObject);
+            if (OBJ.HP <= 0)
+            {
+                
+                //スコアを得る
+                score = OBJ.Value; //Debug.Log("オブジェクト名" + other.name);
+                sentence += score;
 
-            Debug.Log("Score"+ score);
+                //オブジェクトを削除
+                Destroy(other.gameObject);
+
+                Debug.Log("Score" + score);
+            }
+            else
+            {
+              
+                OBJ.TakeDamage(1);
+            }
         }
     }
     //インスタンス

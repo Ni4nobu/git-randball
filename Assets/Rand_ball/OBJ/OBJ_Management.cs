@@ -1,10 +1,18 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 
 //オブジェクトのスコアを決める
 public class OBJ_Management : MonoBehaviour
 {
+
+  
+
+
     public int Value = 0;
+    public int HP = 0;
+   
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,15 +28,19 @@ public class OBJ_Management : MonoBehaviour
     
     }
     //オブジェクトに当たったとき
-    private void OnCollisionEnter(Collision collision)
+    public void TakeDamage(int Damage)
     {
-        //当たったオブジェクトがPlayer
-        //if (collision.gameObject.CompareTag("Player"))
-        //{  //オブジェクトを削除
-        //    Destroy(gameObject);
-        //    Debug.Log("Player衝突");
-
-        //}
+        if(HP >= 0)
+        {
+            //HPが0になるとスコアを得る
+            HP -= Damage;
+            //プレイヤーをとばす
+        }
+        else if (HP <= 0)
+        {
+            HP = 0;
+            
+        }
     }
 
 }
