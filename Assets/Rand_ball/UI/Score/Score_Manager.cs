@@ -20,6 +20,10 @@ public class Score_Manager : MonoBehaviour
 
         score_num += Bomb.instance.sentence; // スコアを足す
 
+        //if (score_num == null)
+        //{
+        //    score_num += 9999999;
+        //}
         // Debug.Log(Ball_Mobe.instance.sentence);
         // テキストの表示を入れ替える
         Score_Text.text = string.Format ("Score:{0000000}" , score_num);//スコアの表示

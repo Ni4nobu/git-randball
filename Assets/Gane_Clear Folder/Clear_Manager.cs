@@ -28,14 +28,8 @@ public class Clear_Manager : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.Return))
         {
-            //ゲーム終了
-#if UNITY_EDITOR
-            // Unityエディターでの動作
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-        // 実際のゲーム終了処理
-        Application.Quit();
-#endif
+            //タイトルに行く
+            SceneManager.LoadScene(Scene_Name_Title);
         }
         if (Input.GetKey(KeyCode.Escape))
         {

@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.UIElements;
@@ -41,7 +42,13 @@ public class Ball_Mobe : MonoBehaviour
     //スコア
     public  int score = 0;
 
-  
+    //ノックバック
+    float Power = 150.0f;
+    //public Transform attacker;
+    bool  KnockBack_Status = false;
+    float KnockBack_Time = 0.2f;
+    float KnockBack_Timer = 0f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -89,10 +96,21 @@ public class Ball_Mobe : MonoBehaviour
         #endif
         }
     }
+
     //プレイヤーの移動
     private void FixedUpdate()
     {
-       
+        //ノックバック時間
+       if(KnockBack_Status == true )
+        {
+            KnockBack_Timer -= Time.fixedDeltaTime;
+
+            if (KnockBack_Timer<=0)
+            {
+                KnockBack_Status = false;
+            }
+            return;
+        }
         Vector3 dir = transform.forward ;
         Vector3 Move_Dir = transform.forward * Move * CurrentSpeed;
         //Vector3 force = new Vector3(30.0f, 0.0f, 0.0f);
@@ -230,7 +248,7 @@ public class Ball_Mobe : MonoBehaviour
             }
             else
             {
-              
+                KnockBackCustom(other.transform, Power);
                 OBJ.TakeDamage(1);
             }
         }
@@ -243,6 +261,25 @@ public class Ball_Mobe : MonoBehaviour
         {
             instance = this;
         }
+    }
+    // 方向と強さを計算してノックバックを与えるメソッド
+    public void KnockBackCustom(Transform attacker, float power)
+    {
+        if (attacker == null)
+        {
+            Debug.Log("attackerがnull");
+            return;
+        }
+
+        // 攻撃を受けた位置と攻撃者の位置から方向を計算
+        Vector3 direction = (transform.position - attacker.position).normalized;
+
+        direction.y = 0.0f;
+        //ノックバック状態ON
+        KnockBack_Status = true;
+        KnockBack_Timer = KnockBack_Time;
+        // 計算した方向と強さを使って吹き飛ばす
+        rb.AddForce(direction * power, ForceMode.Impulse);
     }
 
 }
