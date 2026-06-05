@@ -36,6 +36,7 @@ public class Ball_Mobe : MonoBehaviour
     float Stamina_Consumption = 10.0f;//スタミナ消費
     float Stamina_Recovery = 2.0f;//スタミナ回復
     float Stamina = 0.0f;//スタミナ
+    bool Stamina_Status = false;//加速しているかどうか
 
     //制限速度
     float Max_Speed = 250.0f;
@@ -173,6 +174,7 @@ public class Ball_Mobe : MonoBehaviour
         //ダッシュ
         if (SpeedUp == true && Stamina>0.0f)
         {
+            Stamina_Status = true;
             //速度を足す
 
             //Debug.Log("スペースキー");
@@ -193,7 +195,8 @@ public class Ball_Mobe : MonoBehaviour
         //通常
         else if (SpeedUp == false)
         {
-           // Debug.Log("通常");
+            Stamina_Status = false;
+            // Debug.Log("通常");
             //速度を戻す
             CurrentSpeed = Ball_Speed;//ボール移動
             AA_Current_Rotation_Speed = AA_Ball_Rotation_Accleration_Speed;//ボール回転
@@ -249,7 +252,15 @@ public class Ball_Mobe : MonoBehaviour
             else
             {
                 KnockBackCustom(other.transform, Power);
-                OBJ.TakeDamage(1);
+                if (Stamina_Status == true)
+                {
+                    OBJ.TakeDamage(5);
+                }
+                else if (Stamina_Status == false)
+                {
+                    OBJ.TakeDamage(1);
+                }
+                
             }
         }
     }

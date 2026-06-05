@@ -30,10 +30,11 @@ public class OBJ_Management : MonoBehaviour
     //オブジェクトに当たったとき
     public void TakeDamage(int Damage)
     {
-        if(HP >= 0)
+        if(HP > 0)
         {
             //HPが0になるとスコアを得る
             HP -= Damage;
+            Debug.Log("ダメージ数" + Damage);
             //プレイヤーをとばす
         }
         else if (HP <= 0)
