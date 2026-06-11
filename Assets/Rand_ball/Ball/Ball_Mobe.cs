@@ -28,7 +28,7 @@ public class Ball_Mobe : MonoBehaviour
     float AA_Current_Rotation_Speed = 0.0f;//ボールの回転速度コントロール
     float Ball_Rotation_Speed = 100.0f;
     float AA_Ball_Rotation_Accleration_Speed = 200.0f;//加速時
-    //スペースキーの入力
+    //スペースキーの入力 加速
     bool SpeedUp = false;
 
     //スタミナ
@@ -44,10 +44,11 @@ public class Ball_Mobe : MonoBehaviour
     public  int score = 0;
 
     //ノックバック
-    float Power = 150.0f;
+    float Power = 1700.0f;
+    
     //public Transform attacker;
     bool  KnockBack_Status = false;
-    float KnockBack_Time = 0.2f;
+    float KnockBack_Time = 0.8f;
     float KnockBack_Timer = 0f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -172,53 +173,60 @@ public class Ball_Mobe : MonoBehaviour
             }
         }
         //ダッシュ
-        if (SpeedUp == true && Stamina>0.0f)
+        if (KnockBack_Status == false)
         {
-            Stamina_Status = true;
-            //速度を足す
-
-            //Debug.Log("スペースキー");
-            // Debug.Log("ボールの速度" + CurrentSpeed);
-            AA_Current_Rotation_Speed = Ball_Rotation_Speed; //ボール回転
-             CurrentSpeed = Ball_Accleration_Speed; //ボール移動
-
-            Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
-            Debug.Log("スタミナ:" + Stamina);
-            //70を下回ってもスペースキーを離さないと加速できるのを防ぐ
-            if(Stamina <= 0.0f)
+            if (SpeedUp == true && Stamina > 0.0f)
             {
-                Stamina = 0.0f;
+                Stamina_Status = true;
+                //速度を足す
+
+                //Debug.Log("スペースキー");
+                // Debug.Log("ボールの速度" + CurrentSpeed);
+                AA_Current_Rotation_Speed = Ball_Rotation_Speed; //ボール回転
+                CurrentSpeed = Ball_Accleration_Speed; //ボール移動
+
+                Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
                 Debug.Log("スタミナ:" + Stamina);
-                SpeedUp = false;    
+                //70を下回ってもスペースキーを離さないと加速できるのを防ぐ
+                if (Stamina <= 0.0f)
+                {
+                    Stamina = 0.0f;
+                    Debug.Log("スタミナ:" + Stamina);
+                    SpeedUp = false;
+                }
+            }
+            //通常
+            else if (SpeedUp == false)
+            {
+                Stamina_Status = false;
+                // Debug.Log("通常");
+                //速度を戻す
+                CurrentSpeed = Ball_Speed;//ボール移動
+                AA_Current_Rotation_Speed = AA_Ball_Rotation_Accleration_Speed;//ボール回転
+                                                                               //スタミナ回復
+                if (Stamina <= Max_Stamina)
+                {
+                    Stamina += Stamina_Recovery * Time.fixedDeltaTime;
+                }
+
+
+                //ボールの速度を戻していく
+                if (CurrentSpeed > Ball_Speed)
+                {
+
+                    CurrentSpeed -= 0.5f;
+                    if (CurrentSpeed < Ball_Speed)
+                    {
+                        CurrentSpeed = Ball_Speed;
+                    }
+                    Debug.Log("減速" + CurrentSpeed);
+                }
+                //Debug.Log("ボールの速度"+CurrentSpeed);      
             }
         }
-        //通常
-        else if (SpeedUp == false)
+        if (KnockBack_Status == true && SpeedUp == true)
         {
-            Stamina_Status = false;
-            // Debug.Log("通常");
-            //速度を戻す
-            CurrentSpeed = Ball_Speed;//ボール移動
-            AA_Current_Rotation_Speed = AA_Ball_Rotation_Accleration_Speed;//ボール回転
-            //スタミナ回復
-            if (Stamina <= Max_Stamina)
-            {
-                Stamina += Stamina_Recovery * Time.fixedDeltaTime;
-            }
-           
 
-            //ボールの速度を戻していく
-            if (CurrentSpeed > Ball_Speed)
-            {
-               
-                CurrentSpeed -= 0.5f;
-                if (CurrentSpeed < Ball_Speed)
-                {
-                    CurrentSpeed = Ball_Speed;
-                }
-                    Debug.Log("減速" + CurrentSpeed);
-            }
-            //Debug.Log("ボールの速度"+CurrentSpeed);      
         }
     }
 
@@ -236,7 +244,16 @@ public class Ball_Mobe : MonoBehaviour
             {
                 return;
             }
-
+            if (Stamina_Status == true)
+            {
+                
+                OBJ.TakeDamage(5);
+            }
+            else if (Stamina_Status == false)
+            {
+                
+                OBJ.TakeDamage(1);
+            }
             if (OBJ.HP <= 0)
             {
                 
@@ -248,19 +265,21 @@ public class Ball_Mobe : MonoBehaviour
                 Destroy(other.gameObject);
 
                 Debug.Log("Score" + score);
+                Stamina += 10.0f;
             }
             else
             {
                 KnockBackCustom(other.transform, Power);
-                if (Stamina_Status == true)
-                {
-                    OBJ.TakeDamage(5);
-                }
-                else if (Stamina_Status == false)
-                {
-                    OBJ.TakeDamage(1);
-                }
-                
+                //KnockBackCustom(other.transform, Power);
+                //if (Stamina_Status == true)
+                //{
+                //    OBJ.TakeDamage(5);
+                //}
+                //else if (Stamina_Status == false)
+                //{
+                //    OBJ.TakeDamage(1);
+                //}
+
             }
         }
     }
