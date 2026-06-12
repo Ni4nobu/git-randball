@@ -37,6 +37,7 @@ public class Ball_Mobe : MonoBehaviour
     float Stamina_Recovery = 2.0f;//スタミナ回復
     float Stamina = 0.0f;//スタミナ
     bool Stamina_Status = false;//加速しているかどうか
+    [SerializeField] Dash_Bar DB;//メンバ変数に保存
 
     //制限速度
     float Max_Speed = 250.0f;
@@ -63,11 +64,15 @@ public class Ball_Mobe : MonoBehaviour
         transform.eulerAngles = new Vector3(0, 0, 0); //ボールを回転させる
 
         rb = GetComponent<Rigidbody>();  //Rigidbody取得
+        //DB = GetComponent<Dash_Bar>();
+        DB.TakeDash(Stamina);//スタミナ反映用
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
 
         //ボールを動かすキーの取得
         Move = Input.GetAxisRaw("Vertical");
@@ -186,11 +191,15 @@ public class Ball_Mobe : MonoBehaviour
                 CurrentSpeed = Ball_Accleration_Speed; //ボール移動
 
                 Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
+
+                DB.TakeDash(Stamina);//スタミナ反映用
                 Debug.Log("スタミナ:" + Stamina);
                 //70を下回ってもスペースキーを離さないと加速できるのを防ぐ
                 if (Stamina <= 0.0f)
                 {
                     Stamina = 0.0f;
+
+                    DB.TakeDash(Stamina);//スタミナ反映用
                     Debug.Log("スタミナ:" + Stamina);
                     SpeedUp = false;
                 }
@@ -206,7 +215,9 @@ public class Ball_Mobe : MonoBehaviour
                                                                                //スタミナ回復
                 if (Stamina <= Max_Stamina)
                 {
+
                     Stamina += Stamina_Recovery * Time.fixedDeltaTime;
+                    DB.TakeDash(Stamina);//スタミナ反映用
                 }
 
 
@@ -263,9 +274,21 @@ public class Ball_Mobe : MonoBehaviour
 
                 //オブジェクトを削除
                 Destroy(other.gameObject);
-
-                Debug.Log("Score" + score);
-                Stamina += 10.0f;
+                if (Stamina < Max_Stamina)
+                {
+                    Stamina += 10.0f;
+                    DB.TakeDash(Stamina);//スタミナ反映用
+                    Debug.Log("Score" + score);
+                    if (Stamina > Max_Stamina)
+                    {
+                        Stamina = Max_Stamina;
+                        DB.TakeDash(Stamina);//スタミナ反映用
+                        Debug.Log("Score" + score);
+                    }
+                        
+                }
+               
+                
             }
             else
             {
