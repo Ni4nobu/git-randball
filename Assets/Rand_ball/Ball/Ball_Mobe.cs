@@ -257,23 +257,24 @@ public class Ball_Mobe : MonoBehaviour
             }
             if (Stamina_Status == true)
             {
-                
-                OBJ.TakeDamage(5);
+               
+                OBJ.TakeDamage(20);
             }
             else if (Stamina_Status == false)
             {
-                
+              
                 OBJ.TakeDamage(1);
             }
             if (OBJ.HP <= 0)
             {
-                
+                //KnockBackCustom(other.transform, Power);
                 //スコアを得る
                 score = OBJ.Value; //Debug.Log("オブジェクト名" + other.name);
                 sentence += score;
 
                 //オブジェクトを削除
-                Destroy(other.gameObject);
+                //Destroy(other.gameObject);
+                OBJ.TakeDamage(1);
                 if (Stamina < Max_Stamina)
                 {
                     Stamina += 10.0f;

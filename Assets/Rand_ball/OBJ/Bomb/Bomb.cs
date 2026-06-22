@@ -56,8 +56,11 @@ public class Bomb : MonoBehaviour
                 score = Obj_Score.Value; //Debug.Log("オブジェクト名" + other.name);
                 sentence += score;
 
+                //Obj_Score.TakeDamage(20);
+                 Obj_Score.Break();
                 //オブジェクトを削除
-                Destroy(hit.gameObject);
+                //Destroy(hit.gameObject);
+                Destroy(gameObject);
             }
         }
     }
