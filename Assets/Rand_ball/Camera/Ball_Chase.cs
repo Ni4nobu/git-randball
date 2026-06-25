@@ -31,7 +31,7 @@ public class Ball_Chase : MonoBehaviour
         if (player != null )
         {
             //ƒJƒƒ‰‚ÌˆÊ’u
-            float x = player.transform.position.x + 3;
+            float x = player.transform.position.x + 4;
             float y = player.transform.position.y + 2;
             float z = player.transform.position.z;
 

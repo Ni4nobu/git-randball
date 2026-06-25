@@ -1,11 +1,11 @@
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
+//using Unity.VisualScripting;
+//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
-using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
-using static UnityEditor.Progress;
-using static UnityEngine.GraphicsBuffer;
+//using UnityEngine.InputSystem.XR;
+//using UnityEngine.UIElements;
+//using static UnityEditor.PlayerSettings;
+//using static UnityEditor.Progress;
+//using static UnityEngine.GraphicsBuffer;
 
 //プレイヤーの操作
 //オブジェクトの破壊
@@ -23,7 +23,7 @@ public class Ball_Mobe : MonoBehaviour
     //ボールの速度
     float CurrentSpeed = 0.0f;              //ボールの速度をコントロール
     float Ball_Speed = 4.8f;                //通常の速度
-    float Ball_Accleration_Speed = 10.5f;   //加速時の速度
+    float Ball_Accleration_Speed = 30.5f;   //加速時の速度
     //ボール回転スピード
     float AA_Current_Rotation_Speed = 0.0f;//ボールの回転速度コントロール
     float Ball_Rotation_Speed = 100.0f;
@@ -32,12 +32,17 @@ public class Ball_Mobe : MonoBehaviour
     bool SpeedUp = false;
 
     //スタミナ
-    float Max_Stamina = 100.0f;//最大スタミナ
-    float Stamina_Consumption = 10.0f;//スタミナ消費
-    float Stamina_Recovery = 2.0f;//スタミナ回復
+    float Max_Stamina = 0.0f;//最大スタミナ
+    float Stamina_Consumption = 1.0f;//スタミナ消費
+    float Stamina_Recovery = 1.0f;//スタミナ回復
     float Stamina = 0.0f;//スタミナ
     bool Stamina_Status = false;//加速しているかどうか
     [SerializeField] Dash_Bar DB;//メンバ変数に保存
+
+    //時間
+    float Time_Ball_Max = 5.0f;//最大時間
+    float Time_Ball_1 = 1.0f;//時間1秒経過
+    float Time_Ball_Count = 0.0f;//時間
 
     //制限速度
     float Max_Speed = 250.0f;
@@ -55,8 +60,10 @@ public class Ball_Mobe : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Max_Stamina = 100.0f;//最大スタミナ
+        Max_Stamina = 3.0f;//最大スタミナ
         Stamina = Max_Stamina;
+
+        Time_Ball_Count = 0.0f;//時間初期化
 
         CurrentSpeed = 0.0f;
         AA_Current_Rotation_Speed = 0.0f;//ボールの回転速度コントロール
@@ -212,14 +219,32 @@ public class Ball_Mobe : MonoBehaviour
                 //速度を戻す
                 CurrentSpeed = Ball_Speed;//ボール移動
                 AA_Current_Rotation_Speed = AA_Ball_Rotation_Accleration_Speed;//ボール回転
-                                                                               //スタミナ回復
-                if (Stamina <= Max_Stamina)
+                Time_Ball_Count += Time_Ball_1 * Time.fixedDeltaTime;//時間カウント
+                if (Time_Ball_Count >= Time_Ball_Max)
                 {
-
-                    Stamina += Stamina_Recovery * Time.fixedDeltaTime;
+                    Stamina += Stamina_Recovery;//スタミナ回復
+                    if (Stamina > Max_Stamina)
+                    {
+                        Stamina = Max_Stamina;//スタミナ回復
+                    }
                     DB.TakeDash(Stamina);//スタミナ反映用
+                    Time_Ball_Count = 0.0f;
                 }
-
+                //if (Stamina <= Max_Stamina && Stamina >= 2)
+                //{
+                //    Stamina += Stamina_Recovery;//スタミナ回復
+                //    DB.TakeDash(Stamina);//スタミナ反映用
+                //}
+                //if (Stamina <= 2 && Stamina >= 1)
+                //{
+                //    Stamina += Stamina_Recovery * Time.fixedDeltaTime;//スタミナ回復
+                //    DB.TakeDash(Stamina);//スタミナ反映用
+                //}
+                //if (Stamina <= 1 && Stamina >= 0)
+                //{
+                //    Stamina += Stamina_Recovery * Time.fixedDeltaTime;//スタミナ回復
+                //    DB.TakeDash(Stamina);//スタミナ反映用
+                //}
 
                 //ボールの速度を戻していく
                 if (CurrentSpeed > Ball_Speed)
@@ -277,7 +302,7 @@ public class Ball_Mobe : MonoBehaviour
                 OBJ.TakeDamage(1);
                 if (Stamina < Max_Stamina)
                 {
-                    Stamina += 3.0f;
+                    //Stamina += 1.0f;
                     DB.TakeDash(Stamina);//スタミナ反映用
                     Debug.Log("Score" + score);
                     if (Stamina > Max_Stamina)
