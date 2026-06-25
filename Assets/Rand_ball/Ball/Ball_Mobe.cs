@@ -277,7 +277,7 @@ public class Ball_Mobe : MonoBehaviour
                 OBJ.TakeDamage(1);
                 if (Stamina < Max_Stamina)
                 {
-                    Stamina += 10.0f;
+                    Stamina += 3.0f;
                     DB.TakeDash(Stamina);//スタミナ反映用
                     Debug.Log("Score" + score);
                     if (Stamina > Max_Stamina)
