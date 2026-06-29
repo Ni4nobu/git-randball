@@ -52,15 +52,14 @@ public class Bomb : MonoBehaviour
             {
                 //コンポーネントを得る
                 OBJ_Management Obj_Score = hit.gameObject.GetComponent<OBJ_Management>();
+
+                
                 //スコアを得る
                 score = Obj_Score.Value; //Debug.Log("オブジェクト名" + other.name);
-                sentence += score;
-
-                //Obj_Score.TakeDamage(20);
-                 Obj_Score.Break();
+                Bomb.instance.sentence += score;
+                Obj_Score.Break();
                 //オブジェクトを削除
-                //Destroy(hit.gameObject);
-                Destroy(gameObject);
+                Destroy(hit.gameObject);
             }
         }
     }

@@ -23,12 +23,14 @@ public class OBJ_Management : MonoBehaviour
         {
             //HPが0になるとスコアを得る
             HP -= Damage;
+            
             Debug.Log("ダメージ数" + Damage);
             //プレイヤーをとばす
         }
         else if (HP <= 0)
         {
             HP = 0;
+            
             Break();
         }
     }

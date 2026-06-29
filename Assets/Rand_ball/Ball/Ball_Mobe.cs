@@ -37,13 +37,17 @@ public class Ball_Mobe : MonoBehaviour
     float Stamina_Recovery = 1.0f;//スタミナ回復
     float Stamina = 0.0f;//スタミナ
     bool Stamina_Status = false;//加速しているかどうか
+    int Stamina_a = 0;
     [SerializeField] Dash_Bar DB;//メンバ変数に保存
 
     //時間
     float Time_Ball_Max = 5.0f;//最大時間
     float Time_Ball_1 = 1.0f;//時間1秒経過
     float Time_Ball_Count = 0.0f;//時間
-
+    float Stamina_Time = 0.0f;//時間
+    float Stamina_Time_Max = 1.0f;//最大時間
+    float Stamina_Time_1 = 0.5f;//経過
+    bool Stamina_Time_Status = false;
     //制限速度
     float Max_Speed = 250.0f;
     //スコア
@@ -60,6 +64,9 @@ public class Ball_Mobe : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Stamina_Time_Status = false;
+        Stamina_Time_Max = 1.0f;
+        Stamina_a = 3;
         Max_Stamina = 3.0f;//最大スタミナ
         Stamina = Max_Stamina;
 
@@ -201,15 +208,68 @@ public class Ball_Mobe : MonoBehaviour
 
                 DB.TakeDash(Stamina);//スタミナ反映用
                 Debug.Log("スタミナ:" + Stamina);
-                //70を下回ってもスペースキーを離さないと加速できるのを防ぐ
+
+                //下回ってもスペースキーを離さないと加速できるのを防ぐ
+
+
+                if (Stamina_a == 1)
+                {
+                    Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
+                    DB.TakeDash(Stamina);//スタミナ反映用
+                    if (Stamina <= 0.0f)
+                    {
+                        DB.TakeDash(Stamina);//スタミナ反映用
+                        SpeedUp = false;
+                        Stamina_Time_Status = true;
+                        Stamina_Timar();
+                    }
+                }
+                if (Stamina_a == 2)
+                {
+                    Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
+                    DB.TakeDash(Stamina);//スタミナ反映用
+                    if (Stamina <= 1.0f)
+                    {
+                        DB.TakeDash(Stamina);//スタミナ反映用
+                        SpeedUp = false;
+                        Stamina_Time_Status = true;
+                        Stamina_Timar();
+                    }
+                }
+
+                if (Stamina_a == 3)
+                {
+                    Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
+                    DB.TakeDash(Stamina);//スタミナ反映用
+                    if (Stamina <= 2.0f)
+                    {
+                        DB.TakeDash(Stamina);//スタミナ反映用
+                        SpeedUp = false;
+                        Stamina_Time_Status = true;
+                        Stamina_Timar();
+                    }
+                }
+
                 if (Stamina <= 0.0f)
                 {
                     Stamina = 0.0f;
-
                     DB.TakeDash(Stamina);//スタミナ反映用
                     Debug.Log("スタミナ:" + Stamina);
                     SpeedUp = false;
                 }
+                if (Stamina <= 3.0f && Stamina >= 2.0f)
+                {
+                    Stamina_a = 3;
+                }
+                if (Stamina <= 2.0f && Stamina >= 1.0f)
+                {
+                    Stamina_a = 2;
+                }
+                if (Stamina <= 1.0f && Stamina >= 0.0f)
+                {
+                    Stamina_a = 1;
+                }
+
             }
             //通常
             else if (SpeedUp == false)
@@ -269,7 +329,6 @@ public class Ball_Mobe : MonoBehaviour
     //スコアの計算
     void OnTriggerEnter(Collider other)
     {
-
         //if (collision.gameObject.CompareTag("Player"))
         //スコア
         if (other.gameObject.CompareTag("Score"))
@@ -361,4 +420,15 @@ public class Ball_Mobe : MonoBehaviour
         rb.AddForce(direction * power, ForceMode.Impulse);
     }
 
+    public void Stamina_Timar()
+    {
+        Stamina_Time = Stamina_Time_Max;//時間
+        Stamina_Time -= Stamina_Time_1*Time.fixedDeltaTime;
+
+        if (Stamina_Time <= 0 && Stamina_Time_Status == false)
+        {
+            Stamina_Time_Status = false;
+        }
+        return;
+    }
 }
