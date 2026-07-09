@@ -18,12 +18,12 @@ public class Ball_Mobe : MonoBehaviour
     Rigidbody rb;
     //入力
     float Move = 0.0f;
-    float PosY = -3.0f;
+    float PosY = -3.2f;
     float Rotation = 0.0f;
     //ボールの速度
     float CurrentSpeed = 0.0f;              //ボールの速度をコントロール
     float Ball_Speed = 4.8f;                //通常の速度
-    float Ball_Accleration_Speed = 30.5f;   //加速時の速度
+    float Ball_Accleration_Speed = 25.5f;   //加速時の速度
     //ボール回転スピード
     float AA_Current_Rotation_Speed = 0.0f;//ボールの回転速度コントロール
     float Ball_Rotation_Speed = 100.0f;
@@ -39,6 +39,9 @@ public class Ball_Mobe : MonoBehaviour
     bool Stamina_Status = false;//加速しているかどうか
     int Stamina_a = 0;
     [SerializeField] Dash_Bar DB;//メンバ変数に保存
+    //ダッシュ
+    bool Dash_on = false;
+    //float Dash_Time = 1.0f;//ダッシュする時間
 
     //時間
     float Time_Ball_Max = 5.0f;//最大時間
@@ -54,16 +57,18 @@ public class Ball_Mobe : MonoBehaviour
     public  int score = 0;
 
     //ノックバック
-    float Power = 1700.0f;
+    float Power = 1600.0f;
     
     //public Transform attacker;
     bool  KnockBack_Status = false;
-    float KnockBack_Time = 0.8f;
+    float KnockBack_Time = 0.4f;
     float KnockBack_Timer = 0f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        Screen.SetResolution(1920, 1080, true);
         Stamina_Time_Status = false;
         Stamina_Time_Max = 1.0f;
         Stamina_a = 3;
@@ -79,8 +84,8 @@ public class Ball_Mobe : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();  //Rigidbody取得
         //DB = GetComponent<Dash_Bar>();
-        DB.TakeDash(Stamina);//スタミナ反映用
-
+        DB.TakeDash(Stamina_a);//スタミナ反映用
+       
     }
 
     // Update is called once per frame
@@ -97,6 +102,8 @@ public class Ball_Mobe : MonoBehaviour
         {
             //押した
             SpeedUp = true;
+            
+           // Dash_Time = 1.0f;
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -194,7 +201,7 @@ public class Ball_Mobe : MonoBehaviour
         //ダッシュ
         if (KnockBack_Status == false)
         {
-            if (SpeedUp == true && Stamina > 0.0f)
+            if (SpeedUp == true && Stamina > 0.0f || Dash_on == true)
             {
                 Stamina_Status = true;
                 //速度を足す
@@ -204,28 +211,29 @@ public class Ball_Mobe : MonoBehaviour
                 AA_Current_Rotation_Speed = Ball_Rotation_Speed; //ボール回転
                 CurrentSpeed = Ball_Accleration_Speed; //ボール移動
 
-                Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
+                //Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
 
                 DB.TakeDash(Stamina);//スタミナ反映用
                 Debug.Log("スタミナ:" + Stamina);
 
                 //下回ってもスペースキーを離さないと加速できるのを防ぐ
-
-
                 if (Stamina_a == 1)
                 {
+                    Dash_on = true;
                     Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
-                    DB.TakeDash(Stamina);//スタミナ反映用
+                   DB.TakeDash(Stamina);//スタミナ反映用
                     if (Stamina <= 0.0f)
                     {
                         DB.TakeDash(Stamina);//スタミナ反映用
                         SpeedUp = false;
                         Stamina_Time_Status = true;
                         Stamina_Timar();
+                        Dash_on = false;
                     }
                 }
                 if (Stamina_a == 2)
                 {
+                    Dash_on = true;
                     Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
                     DB.TakeDash(Stamina);//スタミナ反映用
                     if (Stamina <= 1.0f)
@@ -234,11 +242,13 @@ public class Ball_Mobe : MonoBehaviour
                         SpeedUp = false;
                         Stamina_Time_Status = true;
                         Stamina_Timar();
+                        Dash_on = false;
                     }
                 }
 
                 if (Stamina_a == 3)
                 {
+                    Dash_on = true;
                     Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
                     DB.TakeDash(Stamina);//スタミナ反映用
                     if (Stamina <= 2.0f)
@@ -247,7 +257,9 @@ public class Ball_Mobe : MonoBehaviour
                         SpeedUp = false;
                         Stamina_Time_Status = true;
                         Stamina_Timar();
+                        Dash_on = false;
                     }
+                    
                 }
 
                 if (Stamina <= 0.0f)
@@ -269,7 +281,7 @@ public class Ball_Mobe : MonoBehaviour
                 {
                     Stamina_a = 1;
                 }
-
+                
             }
             //通常
             else if (SpeedUp == false)
@@ -412,12 +424,13 @@ public class Ball_Mobe : MonoBehaviour
         // 攻撃を受けた位置と攻撃者の位置から方向を計算
         Vector3 direction = (transform.position - attacker.position).normalized;
 
-        direction.y = 0.0f;
+        direction.y = 0.1f;
         //ノックバック状態ON
         KnockBack_Status = true;
         KnockBack_Timer = KnockBack_Time;
         // 計算した方向と強さを使って吹き飛ばす
         rb.AddForce(direction * power, ForceMode.Impulse);
+        //rb.AddForce(direction * power, ForceMode.Impulse);
     }
 
     public void Stamina_Timar()
@@ -431,4 +444,5 @@ public class Ball_Mobe : MonoBehaviour
         }
         return;
     }
+   
 }

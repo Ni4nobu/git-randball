@@ -1,35 +1,41 @@
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-//リザルト画面のシーン移動とボタンとマウスの制御を行う
-public class Clear_Manager : MonoBehaviour
+//タイトル画面の制御
+public class Title_Manager : MonoBehaviour
 {
-    public GameObject GameButton;//スタートボタン
+    public GameObject StartButton;//スタートボタン
     public GameObject GameEndBotton;//ゲーム終了ボタン
-    public GameObject GameTitleBotton;//タイトルボタン
 
     public string Scene_Name;//シーン読み込み
-    public string Scene_Name_Title;//シーン読み込み
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined; //マウスカーソルの移動をゲームウィンドウ内に制限
         Cursor.visible = true;//カーソル表示
+
+        Screen.SetResolution(1920, 1080, true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //スペースキーでゲームに戻る
+        //スペースキーでゲームに行く
         if (Input.GetKey(KeyCode.Space))
         {
             SceneManager.LoadScene(Scene_Name);
         }
         if (Input.GetKey(KeyCode.Return))
         {
-            //タイトルに行く
-            SceneManager.LoadScene(Scene_Name_Title);
+            //ゲーム終了
+#if UNITY_EDITOR
+            // Unityエディターでの動作
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+        // 実際のゲーム終了処理
+        Application.Quit();
+#endif
         }
         if (Input.GetKey(KeyCode.Escape))
         {
@@ -42,14 +48,15 @@ public class Clear_Manager : MonoBehaviour
         Application.Quit();
 #endif
         }
-
     }
     //スタートボタン押した
-    public void GameButtonClicked()
+    public void StartButtonClicked()
     {
         //ゲームに行く
         SceneManager.LoadScene(Scene_Name);
     }
+
+    //ゲーム終了ボタン押した
     public void GameEndBottonClicked()
     {
         //ゲーム終了
@@ -61,9 +68,8 @@ public class Clear_Manager : MonoBehaviour
         Application.Quit();
 #endif
     }
-    public void GameTitleBottonClicked()
+    public void LoadScene()
     {
-        //タイトルに行く
-        SceneManager.LoadScene(Scene_Name_Title);
+       
     }
 }

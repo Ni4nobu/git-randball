@@ -25,7 +25,7 @@ public class Dash_Bar : MonoBehaviour
         // Current_Stumina -= Dash;    
         //Current_Stumina  = Mathf.Max(0, Current_Stumina);
         //  Stumina_Slider.value = Current_Stumina;
-        Stumina_Slider.value = Dash  ;
+        Stumina_Slider.value = Dash;
         float a = Dash / 300f; // 0‚©‚ç1‚É•ÏŠ·
         //float a = Dash / 100f; // 0‚©‚ç1‚É•ÏŠ·
 
