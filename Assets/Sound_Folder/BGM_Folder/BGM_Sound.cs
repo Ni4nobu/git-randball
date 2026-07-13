@@ -14,7 +14,7 @@ public class BGM_Sound : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Debug.Log("Start");
+        //Debug.Log("Start");
         string Scene_Name = SceneManager.GetActiveScene().name;
         if (Scene_Name == Scene_Name_Titre)
         {

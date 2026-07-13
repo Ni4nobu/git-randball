@@ -24,7 +24,7 @@ public class OBJ_Drete : MonoBehaviour
             //float z = 0 ;
             float x = player.transform.position.x + 5;
             float y = -2;
-            float z = 0;
+            float z = 10;
 
             
             Vector3 v3 = new Vector3(x, y, z);
