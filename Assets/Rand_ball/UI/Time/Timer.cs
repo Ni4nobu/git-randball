@@ -1,12 +1,15 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 //タイマーの制御と表示
 public class Timer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI TimerText;
     [SerializeField] float RemainingTime;
+
+   
 
     public string Scene_Name;//シーン読み込み
     // Update is called once per frame
@@ -30,6 +33,7 @@ public class Timer : MonoBehaviour
             //GameOvere();
             TimerText.color = Color.yellow;
             Debug.Log("ゲーム終了");
+            PlayerPrefs.SetInt("Score", Score_Manager.score_num);
             SceneManager.LoadScene(Scene_Name);
         }
         //計算

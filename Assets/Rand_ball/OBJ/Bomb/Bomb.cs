@@ -17,6 +17,7 @@ public class Bomb : MonoBehaviour
     {
         //名前を取得する
         string gameObjectTagName = this.gameObject.tag;
+        //破壊範囲
         Bonb_Renge = 5.0f;
         //Debug.Log(gameObjectTagName);
     }
@@ -52,14 +53,17 @@ public class Bomb : MonoBehaviour
             {
                 //コンポーネントを得る
                 OBJ_Management Obj_Score = hit.gameObject.GetComponent<OBJ_Management>();
-
                 
                 //スコアを得る
                 score = Obj_Score.Value; //Debug.Log("オブジェクト名" + other.name);
                 Bomb.instance.sentence += score;
-                Obj_Score.Break();
+
+                Obj_Score.TakeDamage(9999);
+               // Obj_Score.Break();
                 //オブジェクトを削除
-                Destroy(hit.gameObject);
+               // Destroy(hit.gameObject);
+              //  Debug.Log(hit.name);
+                
             }
         }
     }

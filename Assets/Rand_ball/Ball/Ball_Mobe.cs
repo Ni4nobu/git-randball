@@ -22,8 +22,8 @@ public class Ball_Mobe : MonoBehaviour
     float Rotation = 0.0f;
     //ボールの速度
     float CurrentSpeed = 0.0f;              //ボールの速度をコントロール
-    float Ball_Speed = 4.8f;                //通常の速度
-    float Ball_Accleration_Speed = 25.5f;   //加速時の速度
+    float Ball_Speed = 3.8f;                //通常の速度
+    float Ball_Accleration_Speed = 16.5f;   //加速時の速度
     //ボール回転スピード
     float AA_Current_Rotation_Speed = 0.0f;//ボールの回転速度コントロール
     float Ball_Rotation_Speed = 100.0f;
@@ -34,7 +34,7 @@ public class Ball_Mobe : MonoBehaviour
     //スタミナ
     float Max_Stamina = 0.0f;//最大スタミナ
     float Stamina_Consumption = 1.0f;//スタミナ消費
-    float Stamina_Recovery = 1.0f;//スタミナ回復
+    float Stamina_Recovery = 0.5f;//スタミナ回復
     float Stamina = 0.0f;//スタミナ
     bool Stamina_Status = false;//加速しているかどうか
     int Stamina_a = 0;
@@ -64,11 +64,18 @@ public class Ball_Mobe : MonoBehaviour
     float KnockBack_Time = 0.4f;
     float KnockBack_Timer = 0f;
 
+    //SE
+    private AudioSource audioSource = null;
+    public AudioClip SE_Dash;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        //SE
+        audioSource = GetComponent<AudioSource>();
+        //画面
         Screen.SetResolution(1920, 1080, true);
+        //スタミナ
         Stamina_Time_Status = false;
         Stamina_Time_Max = 1.0f;
         Stamina_a = 3;
@@ -102,8 +109,12 @@ public class Ball_Mobe : MonoBehaviour
         {
             //押した
             SpeedUp = true;
-            
-           // Dash_Time = 1.0f;
+            if (SpeedUp == true && Stamina > 0.0f&& Dash_on == false)
+            {
+                PlaySE(SE_Dash);
+            }
+
+            // Dash_Time = 1.0f;
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -214,11 +225,12 @@ public class Ball_Mobe : MonoBehaviour
                 //Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
 
                 DB.TakeDash(Stamina);//スタミナ反映用
-                Debug.Log("スタミナ:" + Stamina);
+                //Debug.Log("スタミナ:" + Stamina);
 
                 //下回ってもスペースキーを離さないと加速できるのを防ぐ
                 if (Stamina_a == 1)
                 {
+                    //PlaySE(SE_Dash);
                     Dash_on = true;
                     Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
                    DB.TakeDash(Stamina);//スタミナ反映用
@@ -233,6 +245,7 @@ public class Ball_Mobe : MonoBehaviour
                 }
                 if (Stamina_a == 2)
                 {
+                   // PlaySE(SE_Dash);
                     Dash_on = true;
                     Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
                     DB.TakeDash(Stamina);//スタミナ反映用
@@ -248,6 +261,7 @@ public class Ball_Mobe : MonoBehaviour
 
                 if (Stamina_a == 3)
                 {
+                   // PlaySE(SE_Dash);
                     Dash_on = true;
                     Stamina -= Stamina_Consumption * Time.fixedDeltaTime;//スタミナを減らす
                     DB.TakeDash(Stamina);//スタミナ反映用
@@ -261,12 +275,13 @@ public class Ball_Mobe : MonoBehaviour
                     }
                     
                 }
+                
 
                 if (Stamina <= 0.0f)
                 {
                     Stamina = 0.0f;
                     DB.TakeDash(Stamina);//スタミナ反映用
-                    Debug.Log("スタミナ:" + Stamina);
+                    //Debug.Log("スタミナ:" + Stamina);
                     SpeedUp = false;
                 }
                 if (Stamina <= 3.0f && Stamina >= 2.0f)
@@ -327,7 +342,7 @@ public class Ball_Mobe : MonoBehaviour
                     {
                         CurrentSpeed = Ball_Speed;
                     }
-                    Debug.Log("減速" + CurrentSpeed);
+                    //Debug.Log("減速" + CurrentSpeed);
                 }
                 //Debug.Log("ボールの速度"+CurrentSpeed);      
             }
@@ -444,5 +459,15 @@ public class Ball_Mobe : MonoBehaviour
         }
         return;
     }
-   
+    public void PlaySE(AudioClip clip)
+    {
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+        else
+        {
+            Debug.Log("audiosource=null");
+        }
+    }
 }

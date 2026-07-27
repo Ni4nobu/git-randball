@@ -42,21 +42,21 @@ public class Ball_Chase : MonoBehaviour
             float mx = Input.GetAxis("Mouse X");//カーソルの横の移動量を取得
             float my = Input.GetAxis("Mouse Y");//カーソルの縦の移動量を取得
 
-            //マウスの左クリックを押している間視点をマウスで動かせる
-            if (Input.GetMouseButton(0))
-            {
-                //Debug.Log("左クリックされた");
-                if (Mathf.Abs(mx) > 0.001f) // X方向に一定量移動していれば横回転
-                {
-                    transform.RotateAround(player.transform.position, Vector3.up, mx); // 回転軸はplayerオブジェクトのワールド座標Y軸
+            ////マウスの左クリックを押している間視点をマウスで動かせる
+            //if (Input.GetMouseButton(0))
+            //{
+            //    //Debug.Log("左クリックされた");
+            //    if (Mathf.Abs(mx) > 0.001f) // X方向に一定量移動していれば横回転
+            //    {
+            //        transform.RotateAround(player.transform.position, Vector3.up, mx); // 回転軸はplayerオブジェクトのワールド座標Y軸
 
-                }
-            }
-            //マウスで動かした視点をマウスホイールでリセット
-            if (Input.GetMouseButtonUp(2))
-            {
-                transform.eulerAngles = new Vector3(165, 90, 180);
-            }
+            //    }
+            //}
+            ////マウスで動かした視点をマウスホイールでリセット
+            //if (Input.GetMouseButtonUp(2))
+            //{
+            //    transform.eulerAngles = new Vector3(165, 90, 180);
+            //}
 
 
         }

@@ -7,9 +7,9 @@ public class Title_Manager : MonoBehaviour
 {
     public GameObject StartButton;//スタートボタン
     public GameObject GameEndBotton;//ゲーム終了ボタン
-
-    private AudioSource audioSource = null;
+ private AudioSource audioSource = null;
     public AudioClip SE;
+   
 
     public string Scene_Name;//シーン読み込み
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -32,17 +32,17 @@ public class Title_Manager : MonoBehaviour
             StartCoroutine(PrintHello());
             // SceneManager.LoadScene(Scene_Name);
         }
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            //ゲーム終了
-#if UNITY_EDITOR
-            // Unityエディターでの動作
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-        // 実際のゲーム終了処理
-        Application.Quit();
-#endif
-        }
+//        if (Input.GetKeyDown(KeyCode.Return))
+//        {
+//            //ゲーム終了
+//#if UNITY_EDITOR
+//            // Unityエディターでの動作
+//            UnityEditor.EditorApplication.isPlaying = false;
+//#else
+//        // 実際のゲーム終了処理
+//        Application.Quit();
+//#endif
+//        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             //ゲーム終了

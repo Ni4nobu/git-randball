@@ -18,10 +18,12 @@ public class OBJ_Management : MonoBehaviour
 
     public int Value = 0;
     public int HP = 0;
+
+    bool Break_on = false;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        
+        Break_on = false;
     }
     //オブジェクトに当たったとき
     public void TakeDamage(int Damage)
@@ -34,8 +36,9 @@ public class OBJ_Management : MonoBehaviour
             
             Debug.Log("ダメージ数" + Damage);
             //プレイヤーをとばす
+            Break_on = false;
         }
-        else if (HP <= 0)
+         if (HP <= 0 && Break_on == false)
         {
             audioSource.Stop();
             //PlaySE(SE_Break);
@@ -44,8 +47,9 @@ public class OBJ_Management : MonoBehaviour
             if (SE_Break != null && OBJ_SE_Sound != null)
             {
                 OBJ_SE_Sound.PlaySE(SE_Break);
-                Debug.Log("SE");
+                //Debug.Log("SE");
             }
+            Break_on = true;
             Break();
         }
     }
@@ -68,10 +72,10 @@ public class OBJ_Management : MonoBehaviour
             //コライダー消す
             GetComponent<Collider>().enabled = false;
             //おおもとのオブジェクトの削除
-            Destroy(gameObject);
+             Destroy(gameObject);
             // Destroy(brokenPrefab);
             //破片を破壊 + 何秒後か
-            Destroy(brokenTransform.gameObject, 4.0f);
+             Destroy(brokenTransform.gameObject, 4.0f);
         }
     }
     public void PlaySE(AudioClip clip)
@@ -79,10 +83,12 @@ public class OBJ_Management : MonoBehaviour
         if (audioSource != null)
         {
             audioSource.PlayOneShot(clip);
+
         }
         else
         {
             Debug.Log("audiosource=null");
+            
         }
     }
 }

@@ -32,6 +32,7 @@ public class BGM_Sound : MonoBehaviour
             Game_BGM.Stop();
             Titre_BGM.Stop();
 
+            
             Game_BGM.Play();
         }
         if (Scene_Name == Scene_Name_Clear)
@@ -49,6 +50,6 @@ public class BGM_Sound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+        
     }
 }
